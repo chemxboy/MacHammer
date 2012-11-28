@@ -1,0 +1,3 @@
+{% for p in update.packages %}
+	<li><a href="{{ p.url }}">{{ p.filename }} {{ p.size|filesizeformat }}</a></li>
+{% endfor %}
