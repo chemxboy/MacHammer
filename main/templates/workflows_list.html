@@ -1,0 +1,14 @@
+{% extends "default.html" %}
+{% block sidebar %}
+    
+{% endblock sidebar %}
+{% block content %}
+    <table class="table">
+    {% for s in specs %}
+        <tr>
+            <td><a href="{{ s.get_absolute_url }}">{{ s.title }}</a></td>
+            <td>{{ s.model_id }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock content %}

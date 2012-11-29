@@ -1,0 +1,62 @@
+{% extends "specs_list.html" %}
+
+{% block specs_detail %}
+    <legend>{{ spec.title }}</legend>
+    <dl class="dl-horizontal">
+        <dt>Model ID</dt>
+        <dd>{{ spec.model_id }}</dd>
+        <dt>Introduced</dt>
+        <dd>{{ spec.introduced }}</dd>
+        <dt>Discontinued</dt>
+        <dd>{{ spec.discontinued }}</dd>
+        <dt>Model Number</dt>
+        <dd>{{ spec.model_number }}</dd>
+        <dt>Order Number</dt>
+        <dd>{{ spec.order_number }}</dd>
+    </dl>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>CPU</dt>
+        <dd>{{ spec.cpu }}</dd>
+        <dt>Clock Speed</dt>
+        <dd>{{ spec.cpu_speed }}</dd>
+        <dt>Architecture</dt>
+        <dd>{{ spec.cpu_arch }}</dd>
+        <dt>Cores</dt>
+        <dd>{{ spec.cpu_cores }}</dd>
+        <dt>Cache</dt>
+        <dd>{{ spec.cpu_cache }}</dd>
+        <dt>Bus Speed</dt>
+        <dd>{{ spec.cpu_bus }}</dd>
+    </dl>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>Storage</dt>
+        <dd>{{ spec.storage }}</dd>
+        <dt>Optical</dt>
+        <dd>{{ spec.storage_media }}</dd>
+    </dl>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>Original OS</dt>
+        <dd>{{ spec.original_os }}</dd>
+        <dt>Later OS</dt>
+        <dd>{{ spec.later_os }}</dd>
+        <dt>Max OS</dt>
+        <dd>{{ spec.max_os }}</dd>
+        <dt>AHT version</dt>
+        <dd>{{ spec.aht_version }}</dd>
+        <dt>ASD version</dt>
+        <dd>{{ spec.asd_version }}</dd>
+    </dl>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>Built-In Memory</dt>
+        <dd>{{ spec.ram_builtin }}</dd>
+        <dt>Max Memory</dt>
+        <dd>{{ spec.ram_max }}</dd>
+        <dt>Memory Slots</dt>
+        <dd>{{ spec.ram_slots }}</dd>
+    </dl>
+    <a href="{% url main.views.edit_spec spec.id %}" class="btn pull-right">Edit</a>
+{% endblock specs_detail %}

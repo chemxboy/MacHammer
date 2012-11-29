@@ -4,17 +4,19 @@ from django.conf.urls import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Examples:
-	url(r'^$', 'main.views.index'),
-	url(r'^updates/$', 'main.views.updates'),
-	url(r'^settings/$', 'main.views.settings'),
-	url(r'^updates/(?P<product_id>[\w\-]+)/$', 'main.views.updates'),
-    # url(r'^machammer/', include('machammer.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+urlpatterns = patterns('main.views',
+	url(r'^$', 'index'),
+    url(r'^macs/new/$', 'edit_mac'),
+    url(r'^scripts/$', 'scripts'),
+    url(r'^scripts/(\d+)/$', 'scripts'),
+    url(r'^scripts/new/$', 'edit_script'),
+	url(r'^updates/$', 'updates'),
+    url(r'^workflows/$', 'workflows'),
+    url(r'^workflows/new/$', 'edit_workflow', {'wf_id': "new"}),
+	url(r'^settings/$', 'settings'),
+	url(r'^specs/$', 'specs'),
+    url(r'^specs/(\d+)/$', 'specs'),
+	url(r'^specs/new/$', 'edit_spec', {'spec_id': "new"}),
+    url(r'^specs/(\d+)/edit/$', 'edit_spec'),
+	url(r'^updates/(?P<product_id>[\w\-]+)/$', 'updates'),
 )

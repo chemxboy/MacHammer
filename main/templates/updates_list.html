@@ -1,7 +1,7 @@
 {% extends "default.html" %}
 
 {% block content %}
-<h3>{{ updates|length }} updates available</h3>
+
 <div class="btn-group pull-right">
   <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
     {{ lang }}
@@ -17,7 +17,7 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>Name</th>
+			<th>{{ updates|length }} updates</th>
 			<th>Version</th>
 			<th>Post Date</th>
 			<th></th>

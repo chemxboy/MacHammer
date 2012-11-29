@@ -1,0 +1,24 @@
+{% extends "default.html" %}
+{% block sidebar %}
+<ul class="nav nav-pills nav-stacked">
+{% for c in categories %}
+    <li><a href="?c={{ c.0 }}">{{ c.1 }}</a></li>    
+{% endfor %}
+</ul>
+{% endblock sidebar %}
+
+{% block content %}
+<div class="span4">
+    <ul class="nav nav-pills nav-stacked">
+    {% for s in specs %}
+        <li><a href="{{ s.get_absolute_url }}">{{ s.title }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="span6">
+{% block specs_detail %}
+        
+{% endblock specs_detail %}
+</div>
+{% endblock content %}

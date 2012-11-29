@@ -1,0 +1,246 @@
+{% extends "specs_list.html" %}
+
+{% block specs_detail %}
+<form action="#" method="post" class="form-horizontal">
+    {% csrf_token %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#general" data-toggle="tab">General</a></li>
+        <li><a href="#cpu" data-toggle="tab">Processor</a></li>
+        <li><a href="#storage" data-toggle="tab">Storage</a></li>
+        <li><a href="#software" data-toggle="tab">Software</a></li>
+        <li><a href="#ram" data-toggle="tab">Memory</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="general">
+            <div class="control-group{% for e in form.category.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.category.label }}</label>
+                <div class="controls">
+                    {{ form.category }}
+                    {% for e in form.category.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.title.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.title.label }}</label>
+                <div class="controls">
+                    {{ form.title }}
+                    {% for e in form.title.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.model_id.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.model_id.label }}</label>
+                <div class="controls">
+                    {{ form.model_id }}
+                    {% for e in form.model_id.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.introduced.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.introduced.label }}</label>
+                <div class="controls">
+                    {{ form.introduced }}
+                    {% for e in form.introduced.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.discontinued.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.discontinued.label }}</label>
+                <div class="controls">
+                    {{ form.discontinued }}
+                    {% for e in form.discontinued.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.model_number.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.model_number.label }}</label>
+                <div class="controls">
+                    {{ form.model_number }}
+                    {% for e in form.model_number.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.order_number.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.order_number.label }}</label>
+                <div class="controls">
+                    {{ form.order_number }}
+                    {% for e in form.order_number.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.photo.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.photo.label }}</label>
+                <div class="controls">
+                    {{ form.photo }}
+                    {% for e in form.photo.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="cpu">
+            <div class="control-group{% for e in form.cpu.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.cpu.label }}</label>
+                <div class="controls">
+                    {{ form.cpu }}
+                    {% for e in form.cpu.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.cpu_speed.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.cpu_speed.label }}</label>
+                <div class="controls">
+                    {{ form.cpu_speed }}
+                    {% for e in form.cpu_speed.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.cpu_arch.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.cpu_arch.label }}</label>
+                <div class="controls">
+                    {{ form.cpu_arch }}
+                    {% for e in form.cpu_arch.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.cpu_cores.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.cpu_cores.label }}</label>
+                <div class="controls">
+                    {{ form.cpu_cores }}
+                    {% for e in form.cpu_cores.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.cpu_cache.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.cpu_cache.label }}</label>
+                <div class="controls">
+                    {{ form.cpu_cache }}
+                    {% for e in form.cpu_cache.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.cpu_bus.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.cpu_bus.label }}</label>
+                <div class="controls">
+                    {{ form.cpu_bus }}
+                    {% for e in form.cpu_bus.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="storage">
+            <div class="control-group{% for e in form.storage.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.storage.label }}</label>
+                <div class="controls">
+                    {{ form.storage }}
+                    {% for e in form.storage.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.storage_media.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.storage_media.label }}</label>
+                <div class="controls">
+                    {{ form.storage_media }}
+                    {% for e in form.storage_media.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="software">
+            <div class="control-group{% for e in form.original_os.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.original_os.label }}</label>
+                <div class="controls">
+                    {{ form.original_os }}
+                    {% for e in form.original_os.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.later_os.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.later_os.label }}</label>
+                <div class="controls">
+                    {{ form.later_os }}
+                    {% for e in form.later_os.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.max_os.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.max_os.label }}</label>
+                <div class="controls">
+                    {{ form.max_os }}
+                    {% for e in form.max_os.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.aht_version.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.aht_version.label }}</label>
+                <div class="controls">
+                    {{ form.aht_version }}
+                    {% for e in form.aht_version.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.asd_version.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.asd_version.label }}</label>
+                <div class="controls">
+                    {{ form.asd_version }}
+                    {% for e in form.asd_version.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="ram">
+            <div class="control-group{% for e in form.ram_builtin.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.ram_builtin.label }}</label>
+                <div class="controls">
+                    {{ form.ram_builtin }}
+                    {% for e in form.ram_builtin.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.ram_max.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.ram_max.label }}</label>
+                <div class="controls">
+                    {{ form.ram_max }}
+                    {% for e in form.ram_max.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group{% for e in form.ram_slots.errors %} error{% endfor %}">
+                <label class="control-label">{{ form.ram_slots.label }}</label>
+                <div class="controls">
+                    {{ form.ram_slots }}
+                    {% for e in form.ram_slots.errors %}
+                        <span class="help-inline">{{ e }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+{% endblock specs_detail %}

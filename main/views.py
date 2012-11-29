@@ -1,8 +1,22 @@
+import json
 import urllib, plistlib
 from main.models import *
-from django.shortcuts import render
 from django import forms
+from django.http import HttpResponse
 from django.core.cache import cache
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+
+class ScriptForm(forms.ModelForm):
+    class Meta:
+        model = Task
+
+class SpecForm(forms.ModelForm):
+    class Meta:
+        model = Spec
+
+    tabs = {'General': ['title', 'model_id', 'introduced', 'discontinued', 'model_number', 'order_number', 'photo'],
+    'Processor': ['cpu', 'cpu_speed', 'cpu_arch', 'cpu_cores', 'cpu_cache', 'cpu_bus']}
 
 class SettingsForm(forms.ModelForm):
     class Meta:
@@ -35,6 +49,9 @@ class Package(object):
         return os.path.basename(o.path)
 
 def index(request):
+    if request.META['HTTP_USER_AGENT'] == 'HammerTime/0.1':
+        return HttpResponse(json.dumps("OK"))
+
     return render(request, "index.html")
 
 def updates(request, product_id=None, lang="English"):
@@ -69,7 +86,7 @@ def updates(request, product_id=None, lang="English"):
                 update.date = v['PostDate']
                 for p in v['Packages']:
                     update.packages.append(Package(p))
-                    
+
                 updates.append(update)
             except KeyError:
                 continue
@@ -92,3 +109,69 @@ def settings(request):
 
     form = SettingsForm(instance=conf)
     return render(request, "settings.html", {'form': form})
+
+def specs(request, spec_id=None):
+    specs = Spec.objects.all()
+
+    if spec_id:
+        spec = Spec.objects.get(pk=spec_id)
+        return render(request, "specs_detail.html", {
+            'spec': spec,
+            'specs': specs,
+            'categories': Spec.CATEGORIES
+        })
+
+    if request.GET.get("c"):
+        specs = specs.filter(category=request.GET['c'])
+
+    return render(request, "specs_list.html", {'specs': specs, 
+        'categories': Spec.CATEGORIES})
+
+def edit_spec(request, spec_id):
+    form = SpecForm()
+    spec = Spec()
+    
+    if spec_id != "new":
+        spec = Spec.objects.get(pk=spec_id)
+        form = SpecForm(instance=spec)
+
+    if request.method == "POST":
+        form = SpecForm(request.POST, request.FILES, instance=spec)
+        if form.is_valid():
+            spec = form.save()
+            return redirect(spec)
+
+    return render(request, "specs_edit.html", {'form': form})
+
+def workflows(request, wf_id=None):
+    return render(request, "workflows_list.html")
+
+def edit_workflow(request, wf_id):
+    return render(request, "workflows_edit.html")
+
+@csrf_exempt
+def edit_mac(request, sn=None):
+    plist = plistlib.readPlist(request.FILES['file'])
+    m = Mac()
+    print plist
+
+def scripts(request, script_id=None):
+    scripts = Task.objects.all()
+    if script_id:
+        scripts = scripts.filter(pk=script_id)
+
+    if request.META['HTTP_USER_AGENT'] == 'HammerTime/0.1':
+        out = list()
+        for t in scripts:
+            out.append(dict(id=t.pk, title=t.title))
+
+        return HttpResponse(json.dumps(out), content_type='application/json')
+
+def edit_script(request):
+    form = ScriptForm()
+
+    if request.method == "POST":
+        form = ScriptForm(request.POST)
+        form.save()
+
+    return render(request, "scripts_edit.html", {'form': form})
