@@ -6,6 +6,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('main.views',
 	url(r'^$', 'index'),
+    url(r'^get_hammered/$', 'get_hammered'),
     url(r'^macs/new/$', 'edit_mac'),
     url(r'^scripts/$', 'scripts'),
     url(r'^scripts/(\d+)/$', 'scripts'),

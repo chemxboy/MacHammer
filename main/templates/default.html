@@ -14,6 +14,15 @@
 		$(function() {
 			loc = location.pathname.split("/")[1]
 			$('#navbar>li>a[href*="' + loc + '"]').parent().addClass('active');
+
+            $('input#filter').keyup(function() {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.searchable tr').hide();
+                $('.searchable tr').filter(function() {
+                    return rex.test($(this).text());
+            }).show();
+    });
+
 		});
 	</script>
 </head>

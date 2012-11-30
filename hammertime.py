@@ -4,6 +4,7 @@ The MacHammer Runtime
 """
 import re
 import plistlib
+import os, os.path
 import json, urllib2, sys, subprocess
 
 def upload(path, url):
@@ -14,13 +15,38 @@ def sysctl(param):
     # Returns a value of sysctl variable
     return subprocess.check_output(['/usr/sbin/sysctl', '-b', param])
 
+class Repo(object):
+    def __init__(self, url, mount_point='/tmp/mh_repo'):
+        self.url = url
+        self.mount_point = mount_point
+
+        self.scripts = os.path.join(self.mount_point, "Scripts")
+        self.masters = os.path.join(self.mount_point, "Masters")
+        self.recovery = os.path.join(self.mount_point, "Recovery")
+
+    def mount(self):
+        if not os.path.exists(self.mount_point):
+            os.mkdir(self.mount_point)
+        
+        subprocess.call(['/sbin/mount_afp', '-o', 'nobrowse', self.url, 
+            self.mount_point])
+    
+    def umount(self):
+        subprocess.call(['/sbin/umount', self.mount_point])
+        if os.path.exists(self.mount_point):
+            os.rmdir(self.mount_point)
+
+    def script(self, name, *args):
+        path = os.path.join(self.scripts, name)
+        destination = os.path.join(self.recovery, 'disk1.img')
+        subprocess.call([path, '/dev/disk1', destination])
+
 class Request(object):
     def __init__(self, url):
         req = urllib2.Request(url)
         req.add_header('User-Agent', 'HammerTime/0.1')
         self.r = urllib2.urlopen(req)
         self.data = json.loads(self.r.read())
-        return
 
 class Storage(object):
     def __init__(self):
@@ -50,21 +76,28 @@ if __name__ == "__main__":
     url = sys.argv[1].rstrip("/")
     Request(url)
 
-    print "Connected to %s" % url
+    # get config
+    r = Request("%s/settings/" % url)
+    repo = Repo(r.data['repo_url'])
+    repo.mount()
     
     while True:
         line = raw_input('mh > ')
         
         if line == '.quit':
+            repo.umount()
             print "Bye!"
             break
         
+        if line == 'recover':
+            repo.script('ddrescue')
+
         if line == 'scripts':
             r = Request("%s/scripts/" % url)
             for s in r.data:
                 print "%s\t%s" % (s['id'], s['title'])
 
-        if re.match(r'^scripts \d$', line):
+        if re.match(r'^scripts (\d)$', line):
             print "Run script!"
 
         if line == 'specs':

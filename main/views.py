@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.core.cache import cache
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 
 class ScriptForm(forms.ModelForm):
     class Meta:
@@ -17,6 +18,10 @@ class SpecForm(forms.ModelForm):
 
     tabs = {'General': ['title', 'model_id', 'introduced', 'discontinued', 'model_number', 'order_number', 'photo'],
     'Processor': ['cpu', 'cpu_speed', 'cpu_arch', 'cpu_cores', 'cpu_cache', 'cpu_bus']}
+
+class WorkflowForm(forms.ModelForm):
+    class Meta:
+        model = Workflow
 
 class SettingsForm(forms.ModelForm):
     class Meta:
@@ -57,6 +62,7 @@ def index(request):
 def updates(request, product_id=None, lang="English"):
     from operator import attrgetter
     conf = Configuration.objects.get(pk=1)
+    updates = []
 
     if request.GET.get("lang"):
         lang = request.GET['lang']
@@ -75,7 +81,8 @@ def updates(request, product_id=None, lang="English"):
 
         return render(request, "updates_detail.html", {'update': update})
 
-    updates = cache.get("updates-%s" % lang)
+    if not request.GET.get('resync'):
+        updates = cache.get("updates-%s" % lang)
     
     if not updates:
         updates = []
@@ -103,6 +110,10 @@ def updates(request, product_id=None, lang="English"):
 def settings(request):
     conf = Configuration.objects.get_or_create(pk=1)[0]
 
+    if request.META['HTTP_USER_AGENT'] == 'HammerTime/0.1':
+        data = dict(repo_url=conf.repo_url)
+        return HttpResponse(json.dumps(data), content_type='application/json') 
+        
     if request.method == "POST":
         form = SettingsForm(request.POST, instance=conf)
         form.save()
@@ -147,7 +158,8 @@ def workflows(request, wf_id=None):
     return render(request, "workflows_list.html")
 
 def edit_workflow(request, wf_id):
-    return render(request, "workflows_edit.html")
+    form = WorkflowForm()
+    return render(request, "workflows_edit.html", {'form': form})
 
 @csrf_exempt
 def edit_mac(request, sn=None):
@@ -157,6 +169,7 @@ def edit_mac(request, sn=None):
 
 def scripts(request, script_id=None):
     scripts = Task.objects.all()
+
     if script_id:
         scripts = scripts.filter(pk=script_id)
 
@@ -167,6 +180,12 @@ def scripts(request, script_id=None):
 
         return HttpResponse(json.dumps(out), content_type='application/json')
 
+    if script_id:
+        form = ScriptForm(instance=scripts[0])
+        return render(request, "scripts_edit.html", {'form': form})
+
+    return render(request, "scripts_list.html", {'scripts': scripts})
+
 def edit_script(request):
     form = ScriptForm()
 
@@ -175,3 +194,7 @@ def edit_script(request):
         form.save()
 
     return render(request, "scripts_edit.html", {'form': form})
+
+def get_hammered(request):
+    fh = open("hammertime.py", "r")
+    return HttpResponse(fh.read())

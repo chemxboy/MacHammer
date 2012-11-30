@@ -9,12 +9,21 @@ class Configuration(models.Model):
 	gsx_username = models.CharField(max_length=64, null=True, blank=True)
 	gsx_password = models.CharField(max_length=64, null=True, blank=True)
 
+	repo_url = models.CharField(max_length=255, 
+		help_text='afp://user@example.com/share')
+
 class Task(models.Model):
 	title = models.CharField(max_length=255, default='New Script')
 	command = models.TextField(default='#! /bin/sh\n')
 
+	def get_absolute_url(self):
+		return "/scripts/%d/" % self.pk
+		
+	def __str__(self):
+		return self.title
+
 class Workflow(models.Model):
-	title = models.CharField(max_length=255)
+	title = models.CharField(max_length=255, default=u'New Workflow')
 	tasks = models.ManyToManyField(Task)
 
 class Spec(models.Model):

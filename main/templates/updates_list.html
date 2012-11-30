@@ -13,17 +13,19 @@
   	{% endfor %}
   </ul>
 </div>
-
+<form class="form-search">
+    <input type="text" class="input-medium search-query" placeholder="{{ updates|length }} updates..." id="filter"/>
+</form>
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>{{ updates|length }} updates</th>
+			<th>Name</th>
 			<th>Version</th>
 			<th>Post Date</th>
 			<th></th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody class="searchable">
 		{% for u in updates %}
 			<tr>
 				<td>{{ u.title }}</td>
